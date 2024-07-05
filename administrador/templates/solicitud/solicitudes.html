@@ -26,7 +26,8 @@
             </div>
             <div class="botones-solicitud">      
                 <a href="{% url 'administrador:dashboard_aceptar_solicitud' solicitud.id_solicitud %}" class="btn_activar">Aceptar Solicitud</a>
-                <button class="btn_eliminar">Rechazar Solicitud</button>
+                <a href="{% url 'administrador:dashboard_rechazar_solicitud' solicitud.id_solicitud %}" class="btn_eliminar">Rechazar Solicitud</a>
+    
             </div>
             
             

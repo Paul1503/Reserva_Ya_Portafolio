@@ -308,6 +308,7 @@ input[for="id_remember"] {
     width: 70%; /* Ajustar el ancho del input al 100% del contenedor */
     margin: 0 auto;
     margin-bottom: 10px;
+    height: 30px;
     border-radius: 10px;
 }
 .form-container input:focus, .form-container input[type="checked"]:focus {

@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +61,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -105,6 +108,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+#Conexion base de datos PostgreSql
+DATABASES["default"] = dj_database_url.parse("postgresql://reservayadatabase_cobj_user:x57YZr1tgsePMsVgwNGjDTzdJ5e4IdwA@dpg-cq460idds78s73cft5p0-a.oregon-postgres.render.com/reservayadatabase_cobj")
 
 
 # Password validation
@@ -157,6 +163,7 @@ MEDIA_URL = '/media/'
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 else:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

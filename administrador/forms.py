@@ -16,6 +16,15 @@ class RegisterForm(forms.ModelForm):
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Las contraseñas no coinciden")
         return confirm_password
+    def clean_email(self):
+        email= self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("El correo electronico ya existe")
+        return email
+    def clean_username(self):
+        username= self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Ese nombre de usuario ya existe")
 
     def save(self, commit=True):
         user = super().save(commit=False)

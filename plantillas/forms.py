@@ -1,6 +1,6 @@
 from django import forms
 from .models import Solicitud
-
+from django.contrib.auth.models import User
 from django import forms
 from .models import Solicitud
 from django.core.validators import RegexValidator
@@ -53,5 +53,6 @@ class SolicitudForm(forms.ModelForm):
 
     def clean_correo_electronico(self):
         email = self.cleaned_data.get('correo_electronico')
-        
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Ese correo electronico ya esta registrado en nuestra base de datos")
         return email

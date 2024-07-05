@@ -37,4 +37,6 @@ urlpatterns = [
 
     path('transferir_empresa/<int:id_pagos>',views.modificar_pago,name='transferir_empresa'),
 
+    path('dashboard_rechazar_solicitud/<int:id_solicitud>',views.dashboard_rechazar_solicitud,name="dashboard_rechazar_solicitud")
+
 ]

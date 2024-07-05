@@ -21,7 +21,13 @@
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
-            <button type="submit" class="btn_login">{% trans "Sign Up" %}</button>
+            <button type="submit" class="btn_login" style="background-color: cadetblue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;">{% trans "Sign Up" %}</button>
             <div class="contenedor-forgot_sigup">
                 <a class="btn-contraseña" href="{% url 'plantillas:solicitud_empresa' %}" >Cuenta de empresa</a>
                 <a class="btn-contraseña" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>

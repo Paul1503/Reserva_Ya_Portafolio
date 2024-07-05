@@ -25,6 +25,7 @@ def user_is_staff(user):
     return user.is_staff
 
 # TODOS LOS VIEWS DE DASHBOARD
+@user_passes_test(user_is_staff)
 @login_required
 def dashboard(request):
     usuario = request.user
@@ -160,9 +161,11 @@ def dashboard_detalle_cancha(request):
 @login_required
 def dashboard_cancha(request):
     canchas = Cancha.objects.filter(user=request.user)
+    datos_transferencia= DatosTransferencia.objects.filter(usuario=request.user).exists()
     context = {
         'titulo': 'Cancha Administrador',
-        'canchas': canchas
+        'canchas': canchas,
+        'datos_transferencia': datos_transferencia
     }
     return render(request, 'canchas/canchas.html', context)
 
@@ -492,10 +495,12 @@ def dashboard_configuracion(request):
 def dashboard_solicitudes(request):
     solicitudes = Solicitud.objects.filter(estado="pendiente")
     return render(request,'solicitud/solicitudes.html',{'solicitudes':solicitudes})
+
 @user_passes_test(user_is_staff)
 @login_required
 def dashboard_aceptar_solicitud(request,id_solicitud):
     solicitud= get_object_or_404(Solicitud,id_solicitud= id_solicitud)
+    solicitudes = Solicitud.objects.filter(estado="pendiente")
     nueva_empresa= User.objects.create_user(
         username = solicitud.nombre_empresa,
         email = solicitud.correo_electronico,
@@ -518,7 +523,18 @@ def dashboard_aceptar_solicitud(request,id_solicitud):
     mensaje= "Tu solicitud de la creacion de una cuenta de empresa a sido aceptada!\nTus Credenciales son las siguientes: \n"+"Username: "+solicitud.nombre_empresa+"\nPassword: "+solicitud.rut_empresa+"\nRecuerda que para subir tus espacios debes agregar tus datos de transferencia!\nSaludos"
 
     send_mail("Creacion de cuenta de empresa",mensaje,settings.EMAIL_HOST_USER,[solicitud.correo_electronico] )
-    return render(request,'solicitud/solicitudes.html')
+    return render(request,'solicitud/solicitudes.html',{'solicitudes':solicitudes})
+
+@user_passes_test(user_is_staff)
+@login_required
+def dashboard_rechazar_solicitud(request,id_solicitud):
+    solicitud= get_object_or_404(Solicitud,id_solicitud= id_solicitud)
+    solicitud.estado = "Rechazada"
+    solicitud.save()
+    solicitudes = Solicitud.objects.filter(estado="pendiente")
+    mensaje= "Lo sentimos...\nTu solicitud de creación de cuenta de empresa a sido rechazada por los administradores de Reservas Ya!\nSaludos!"
+    send_mail("Respuesta de solicitud de creación de cuenta de empresa",mensaje,settings.EMAIL_HOST_USER,[solicitud.correo_electronico])
+    return render(request,'solicitud/solicitudes.html',{'solicitudes':solicitudes})
 
 @login_required
 def dashboard_datos_transferencia(request):
