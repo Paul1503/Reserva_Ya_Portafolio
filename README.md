@@ -7,3 +7,4 @@
 6 - python manage.py runserver
 7 - pip install celery
 8 - pip install jwt
+9 - pip install pillow
