@@ -162,7 +162,7 @@ MESSAGE_TAGS = {
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-if not DEBUG:
+if  DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
